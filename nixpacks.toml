@@ -1,0 +1,14 @@
+# Coolify detects this file automatically when Nixpacks is selected.
+# SQLite itself is embedded; only OpenSSL is needed by Prisma's engine.
+[phases.setup]
+nixPkgs = ["nodejs_22", "openssl"]
+
+[phases.install]
+cmds = ["npm ci"]
+
+[phases.build]
+cmds = ["npm run build"]
+
+# Run checked-in migrations on every release. This is safe to repeat.
+[start]
+cmd = "mkdir -p data && touch data/todo.db && npx prisma migrate deploy && npm run start"
